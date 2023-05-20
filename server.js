@@ -72,7 +72,7 @@ app.get("/pic", async (req, res) => {
 app.post("/pic", async (req, res) => {
   try {
     // send all people
-    res.json(await People.create(req.body));
+    res.json(await Pic.create(req.body));
   } catch (error) {
     //send error
     res.status(400).json(error);
@@ -94,7 +94,7 @@ app.put("/pic/:id", async (req, res) => {
   try {
     // send all people
     res.json(
-      await People.findByIdAndUpdate(req.params.id, req.body, { new: true })
+      await Pic.findByIdAndUpdate(req.params.id, req.body, { new: true })
     );
   } catch (error) {
     //send error
