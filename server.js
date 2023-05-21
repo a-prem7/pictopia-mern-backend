@@ -12,8 +12,11 @@ const express = require("express");
 const app = express();
 // import mongoose
 const mongoose = require("mongoose");
+const picController = require("./controllers/pic");
 // import middlware
 const cors = require("cors");
+
+const pic = require("./models/pic");
 const morgan = require("morgan");
 
 ///////////////////////////////
@@ -33,13 +36,6 @@ mongoose.connection
 ///////////////////////////////
 // MODELS
 ////////////////////////////////
-const PicSchema = new mongoose.Schema({
-  title: String,
-  image: String,
-  description: String,
-});
-
-const Pic = mongoose.model("Pic", PicSchema);
 
 ///////////////////////////////
 // MiddleWare
@@ -49,6 +45,7 @@ app.use(morgan("dev")); // logging
 app.use(express.json()); // parse json bodies
 app.use(express.urlencoded({ extended: true }));
 
+app.use(picController);
 ///////////////////////////////
 // ROUTES
 ////////////////////////////////
@@ -57,50 +54,6 @@ app.get("/", (req, res) => {
   res.send("hello world");
 });
 
-//  INDEX ROUTE
-app.get("/pic", async (req, res) => {
-  try {
-    // send all people
-    res.json(await Pic.find({}));
-  } catch (error) {
-    //send error
-    res.status(400).json(error);
-  }
-});
-
-//  CREATE ROUTE
-app.post("/pic", async (req, res) => {
-  try {
-    // send all people
-    res.json(await Pic.create(req.body));
-  } catch (error) {
-    //send error
-    res.status(400).json(error);
-  }
-});
-// DELETE ROUTE
-app.delete("/pic/:id", async (req, res) => {
-  try {
-    // send all
-    res.json(await Pic.findByIdAndRemove(req.params.id));
-  } catch (error) {
-    //send error
-    res.status(400).json(error);
-  }
-});
-
-//  UPDATE ROUTE
-app.put("/pic/:id", async (req, res) => {
-  try {
-    // send all people
-    res.json(
-      await Pic.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    );
-  } catch (error) {
-    //send error
-    res.status(400).json(error);
-  }
-});
 ///////////////////////////////
 // LISTENER
 ////////////////////////////////
